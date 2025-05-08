@@ -1,0 +1,1922 @@
+<?php
+
+	$arrSwitchUsados=array("XT1"=>0, "XT2"=>0, "XT3"=>0, "T4"=>0, "T5"=>0, "T6"=>0, "T7"=>0, "XT4"=>0, "XT5"=>0, "XT6"=>0, "XT7"=>0);
+	$arrSwitchUsadosAmp=array("XT1"=>array(), "XT2"=>array(), "XT3"=>array(), "T4"=>array(), "T5"=>array(), "T6"=>array(), "T7"=>array(), "XT4"=>array(), "XT5"=>array(), "XT6"=>array(), "XT7"=>array());
+	$arrTapasUsadas=array("T50"=>0, "T100"=>0, "T150"=>0, "T200"=>0, "T250"=>0);
+	$arrEspaciosFuturos=array("XT1"=>0, "XT2"=>0, "XT3"=>0, "T4"=>0, "T5"=>0, "T6"=>0, "T7"=>0, "XT4"=>0, "XT5"=>0, "XT6"=>0, "XT7"=>0);
+
+	$pdf->ezSetY($pdf->y-15);
+	
+	$dataCab[0]["NombreCorto0"]="<b>No.</b>";
+	$NombreColumnasCab["NombreCorto0"]='';	
+	$JustifiacionColumnasCab["NombreCorto0"]=array('justification'=>'center', 'width'=>"50");
+	
+	$dataCab[0]["NombreCorto1"]="<b>Especificación: Tablero Switchboard Tmax Link</b>";
+	$NombreColumnasCab["NombreCorto1"]='';	
+	$JustifiacionColumnasCab["NombreCorto1"]=array('justification'=>'center');
+	
+	$pdf->ezTable($dataCab, $NombreColumnasCab, '', array('showHeadings'=>0, 'rowGap' => 4, 'showLines'=>1, 'width'=>$TamTablasCompetas, 'xPos'=>$PosTablasCompletas, 'fontSize' => $TextGreneral, 'shaded'=> 2, 'shadeCol'=>array(1.0,0,0.05), 'shadeCol2'=>array(1.0,0.18,0.18), 'textCol'=>array(1.0,1.0,1.0), 'cols'=>$JustifiacionColumnasCab));
+	$pdf->line(35,$pdf->y,35,40);
+    $pdf->line(85,$pdf->y,85,40);
+    $pdf->line(565,$pdf->y,565,40);
+    $pdf->line(35,40.5,565,40.5);
+	
+	$data[0]["NombreCorto0"]="<b>1</b>";
+	$NombreColumnas["NombreCorto0"]='';	
+	$JustifiacionColumnas["NombreCorto0"]=array('justification'=>'center', 'width'=>"50");
+	
+	$data[0]["NombreCorto1"]="<b>Tablero General de Distribución Principal</b>";
+	$NombreColumnas["NombreCorto1"]='';	
+	$JustifiacionColumnas["NombreCorto1"]=array('justification'=>'center');
+	
+	$pdf->ezTable($data, $NombreColumnas, '', array('showHeadings'=>0, 'rowGap' => 1, 'showLines'=>1, 'width'=>$TamTablasCompetas, 'xPos'=>$PosTablasCompletas, 'fontSize' => $TextGreneral, 'shaded'=> 0, 'textCol'=>array(0.0,0.0,0.0), 'cols'=>$JustifiacionColumnas));
+	unset($data);
+	unset($NombreColumnas);
+	unset($JustifiacionColumnas);
+	
+	$conR=0;
+	$data[$conR]["NombreCorto0"]=" ";
+	$NombreColumnas["NombreCorto0"]='';	
+	$JustifiacionColumnas["NombreCorto0"]=array('justification'=>'center', 'width'=>"50");
+	
+	$data[$conR]["NombreCorto1"]="Tipo Switchboard";
+	$NombreColumnas["NombreCorto1"]='';	
+	$JustifiacionColumnas["NombreCorto1"]=array('justification'=>'left');
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="Referencia:  ".$cita["Referencia"];
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="<b>Modelo: Tmax Link estandar</b>";
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="<b>Marca ABB</b>";
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="Gabinete: ".$cita["GradoProteccion"];
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="Fabricado con Lamina Rolado en Frio";
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="Estructura calibre <b>12</b> y tapas calibre <b>14</b>";
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="<b>Montaje tipo:</b> autosoportado";
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="<b>Pintura:</b> electrostática a base de polvo epóxico color gris ANSI 61";
+	
+	$CantidadGabinetes=1;
+	$ConsultaC = "SELECT Cantidad FROM C_EquiposTmaxLinkFCotizacionAdicionales WHERE IDCotizacion='".$_SESSION["IDCotizacionTmaxActivo"]."' and Filtro='Espacios y Secciones Adicionales' and Cantidad>0 and Estatus='Activo' ORDER BY ID ASC LIMIT 1;";
+	$queryC = mysqli_query($conexion, $ConsultaC);
+	while ($citaC = mysqli_fetch_array($queryC))
+	{
+		$CantidadGabinetes+=intval($citaC["Cantidad"]);
+	}
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="Dimenciones: ".$CantidadGabinetes." Secciones";
+	$CorrNominal=intval(str_replace(" Amp", "", $cita["CorrienteNominal"]));
+
+	$Dimensiones="2250x".$ancho;
+	$tabDeep = "711";
+	if($CorrNominal>=1600 and $CorrNominal<2500)
+		$tabDeep = "965";
+	else if($CorrNominal>=2500 and $CorrNominal<4000)
+		$tabDeep = "1219";
+	else if($CorrNominal>=4000)
+		$tabDeep = "1500";
+
+	$Dimensiones.="x".$tabDeep;
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="<b>MEDIDA(Altura/Frente/Profundidad)</b>: ".$Dimensiones." mm";
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="Voltaje máximo: 600 Vac";
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="Voltaje de empleo: ".$cita["VoltajeOperacion"];
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="Corriente Nominal: ".$cita["CorrienteNominal"];
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="Bus de Barras: cobre electrolítico";
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="3 Fases + Neutro al 100% + Barra de tierra";
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="Terminado: Estañado.";
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="Sistema Eléctrico: 3F, 4H, 60 Hz";
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="Icc Corriente de soporte al cortocircuito del Tablero: 65 kA";
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="Nivel de corto circuito mínimo en Interruptores Derivados: Icu = "	.$cita["CorrienteCortoCircuito"]." kA";
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]=" ";
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="Equipo de Medición, montado a Panel: ".$cita["EquipoMedicion"];
+	
+	$varTipoMedicion=$cita["EquipoMedicion"];
+	$varParametros=$cita["EquipoMedicion"];
+	if($cita["EquipoMedicion"]=="Medición Básica: V I P Q S FP Hz")
+	{
+		$varTipoMedicion="Básica";
+		$varParametros="V, I, P, Q, S, FP, Hz";
+	}
+	else if($cita["EquipoMedicion"]=="Analizador de Redes")
+	{
+		$varTipoMedicion="Analizador de Redes ANR 96";
+		$varParametros="V, I, P, Q, S, FP, Hz, THD, Armonicos y Forma de Onda";
+	}
+		
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="Medición Tipo: ".$varTipoMedicion;
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="<b>Parámetros: ".$varParametros."</b>";
+
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="<b>".$cita["InterruptorPrincipal"]."</b>";
+	
+	$arrTemp=array("1250 Amp"=>"E1.2N 1250 Ekip Dip LSIG. 3 polos", "1600 Amp"=>"E2.2N 1600 Ekip Dip LSIG. 3 polos", "2000 Amp"=>"E2.2N 2000 Ekip Dip LSIG. 3 polos", "2500 Amp"=>"E2.2N 2500 Ekip Dip LSIG. 3 polos", "3200 Amp"=>"E4.2N 3200 Ekip Dip LSIG. 3 polos");
+	$arrTemp2=array("1250 Amp"=>"66 kA @ 440Vac y 50 kA@ 480 Vac", "1600 Amp"=>"66 kA @ 440Vac y 66 kA@ 480 Vac", "2000 Amp"=>"66 kA @ 440Vac y 66 kA@ 480 Vac", "2500 Amp"=>"66 kA @ 440Vac y 66 kA@ 480 Vac", "3200 Amp"=>"66 kA @ 440Vac y 66 kA@ 480 Vac");
+	
+	$varLinea47=$arrTemp[$cita["CorrienteNominal"]];
+	$varLinea48=$arrTemp2[$cita["CorrienteNominal"]];
+	$varInterruptor="Interruptor Principal: Serie Emax 2";
+	$varLinea49="Protecciones, Rele Ekip Dip LSIG";
+	$varLinea50=$cita["InterruptorPrincipal"];
+	$varLinea51="Operación: Manual";
+	$varLinea52="L: (ANSI 49) Protección de sobrecarga";
+	$varLinea53="L= desde 500 hasta 1250 Amps (40% al 100% In); t1= desde 3 hasta 144 Seg";
+	$varLinea54="S: (ANSI 51 & 50TD) Cortocircuito selectivo en tiempo";
+	$varLinea55="S= Off, 0.6 hasta 10 x In, t2= 0.1 hasta 0.8 Seg";
+	$varLinea56="Memoria Térmica en L y S";
+	$varLinea57="I:  (ANSI 50) Cortocircuito instantaneo";
+	$varLinea58="I= Off, 1.5 hasta 15 x In";
+    $varLinea59="G:  (ANSI 51N & 50NTD) Falla a Tierra";
+    $varLinea60="G= Off, 0.1 hasta 1 x In, t4= 0.1 hasta 0.8 Seg, t=k; t=k/I2) ";
+    $varLinea61="           Incluye sensor de 4to polo (protección G falla a tierra)";
+	$dontPrintSpecs = true;
+	if($cita["InterruptorPrincipal"]=="" || $cita["InterruptorPrincipal"]=="Conexión a Zapatas Principales"){
+		if($interruptorPrincipalTmax=="" || $interruptorPrincipalTmax=="Conexión a Zapatas Principales"){
+			$varInterruptor=" ";
+			$varLinea47=" ";
+			$varLinea48=" ";
+			$varLinea49=" ";
+			$varLinea50=" ";
+			$varLinea51=" ";
+			$varLinea52=" ";
+			$varLinea53=" ";
+			$varLinea54=" ";
+			$varLinea55=" ";
+			$varLinea56=" ";
+			$varLinea57=" ";
+			$varLinea58=" ";
+			$varLinea59=" ";
+			$varLinea60=" ";
+			$varLinea61=" ";
+			$dontPrintSpecs = false;
+
+		}
+	}
+	if($dontPrintSpecs==true){
+		$conR++;
+		$data[$conR]["NombreCorto0"]=" ";
+		$data[$conR]["NombreCorto1"]=" ".$varInterruptor;
+		$conR++;
+		$data[$conR]["NombreCorto0"]=" ";
+		$data[$conR]["NombreCorto1"]="<b>Corriente Nominal= ".$cita["CorrienteNominal"]."</b>";
+		$CorrienteNominal=$cita["CorrienteNominal"];
+		$conR++;
+		$data[$conR]["NombreCorto0"]=" ";
+		$data[$conR]["NombreCorto1"]=" ".$varLinea47;
+		$conR++;
+		$data[$conR]["NombreCorto0"]=" ";
+		$data[$conR]["NombreCorto1"]="<b>".$varLinea48."</b>";
+		$conR++;
+		$data[$conR]["NombreCorto0"]=" ";
+		$data[$conR]["NombreCorto1"]="<b>".$varLinea49."</b>";
+		$conR++;
+		$data[$conR]["NombreCorto0"]=" ";
+		$data[$conR]["NombreCorto1"]="<b>".$varLinea50."</b>";
+		$conR++;
+		$data[$conR]["NombreCorto0"]=" ";
+		$data[$conR]["NombreCorto1"]=" ".$varLinea51;
+		$conR++;
+		$data[$conR]["NombreCorto0"]=" ";
+		$data[$conR]["NombreCorto1"]=" ".$varLinea52;
+		$conR++;
+		$data[$conR]["NombreCorto0"]=" ";
+		$data[$conR]["NombreCorto1"]="<b>".$varLinea53."</b>";
+		$conR++;
+		$data[$conR]["NombreCorto0"]=" ";
+		$data[$conR]["NombreCorto1"]=" ".$varLinea54;
+		$conR++;
+		$data[$conR]["NombreCorto0"]=" ";
+		$data[$conR]["NombreCorto1"]="<b>".$varLinea55."</b>";
+		$conR++;
+		$data[$conR]["NombreCorto0"]=" ";
+		$data[$conR]["NombreCorto1"]=" ".$varLinea56;
+		$conR++;
+		$data[$conR]["NombreCorto0"]=" ";
+		$data[$conR]["NombreCorto1"]=" ".$varLinea57;
+		$conR++;
+		$data[$conR]["NombreCorto0"]=" ";
+		$data[$conR]["NombreCorto1"]="<b>".$varLinea58."</b>";
+		$conR++;
+		$data[$conR]["NombreCorto0"]=" ";
+		$data[$conR]["NombreCorto1"]=" ".$varLinea59;
+		$conR++;
+		$data[$conR]["NombreCorto0"]=" ";
+		$data[$conR]["NombreCorto1"]="<b>".$varLinea60."</b>";
+		$conR++;
+		$data[$conR]["NombreCorto0"]=" ";
+		$data[$conR]["NombreCorto1"]="<b>".$varLinea61."</b>";
+		$conR++;
+		$data[$conR]["NombreCorto0"]=" ";
+		$data[$conR]["NombreCorto1"]=" ";
+	}
+
+	$conR++;
+
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]=" ".$varInterruptor;
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="Incluye";
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="Conectores gemelos o Individuales con apertura mediante </b>Bisagras y Chiapa con llave</b>";
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="<b>Tapas Ciegas atornilladas</b>, para cerrar la parte frontal del tablero";
+	$conR++;
+	$data[$conR]["NombreCorto0"]=" ";
+	$data[$conR]["NombreCorto1"]="y con los siguientes interruptores derivados Caja Moldeada.";
+
+	$conR++;
+
+	$pdf->ezTable($data, $NombreColumnas, '', array('showHeadings'=>0, 'rowGap' => 1, 'showLines'=>0, 'width'=>$TamTablasCompetas, 'xPos'=>$PosTablasCompletas, 'fontSize' => $TextGreneral, 'shaded'=> 0, 'textCol'=>array(0.0,0.0,0.0), 'cols'=>$JustifiacionColumnas));
+		unset($data);
+	
+	$ConsultaC = "SELECT * FROM C_EquiposTmaxLinkFCotizacionCajas WHERE IDCotizacion='".$cita["IDCotizacionTmax"]."' and Estatus='Activo' ORDER BY Ordenar ASC;";
+
+	$queryC = mysqli_query($conexion, $ConsultaC);
+	while ($citaC = mysqli_fetch_array($queryC))
+	{
+		$ConsultaPP = "SELECT Codigo,Descripcion FROM PedidosProductos WHERE IDPedidos='".$cita["ID"]."' and Codigo='".$citaC["Codigo"]."' and Estatus='Activo' and Cantidad>0 ORDER BY ID ASC;";
+		$productDescription = $citaC["Descripcion"];
+		if($queryPP = mysqli_query($conexion, $ConsultaPP))
+			while ($citaPP = mysqli_fetch_array($queryPP))
+			{
+				$productDescription = $citaPP["Descripcion"];
+			}
+		$arrSwitchUsados[$citaC["ReleProteccion"]]+=floatval($citaC["Cantidad"]);
+
+		for($i=0; $i<floatval($citaC["Cantidad"]); $i++)
+		{
+			$arrSwitchUsadosAmp[$citaC["ReleProteccion"]][]=$citaC["CorrienteNominal"];
+		}
+		
+		$arrTemp2=explode(" + ", $productDescription);
+
+		for($j=0; $j<count($arrTemp2); $j++)
+		{
+			$conR=0;
+			$data[$conR]["NombreCorto0"]=" ";
+			$data[$conR]["NombreCorto1"]=$citaC["Cantidad"]." Pzas ".$arrTemp2[$j];
+
+			if($pdf->y<=65)
+			{
+				$pdf->ezNewPage();
+				$pdf->addPngFromFile($nmbreImagenEmpresa,40,780,$LargoImagenLogo2,$AltoImagenLogo2);
+				$pdf->ezSetY($PosY);
+				$pdf->ezTable($dataTab, $NombreColumnasTab, '', array('showHeadings'=>0, 'rowGap' => 1, 'showLines'=>1, 'width'=>$TamTablasCompetas, 'xPos'=>$PosTablasCompletas, 'fontSize' => $TextGreneral, 'shaded'=> 0, 'textCol'=>array(0.0,0.0,0.0), 'cols'=>$JustifiacionColumnasTab));
+				$pdf->ezSetY($pdf->y-15);
+				$pdf->ezTable($dataCab, $NombreColumnasCab, '', array('showHeadings'=>0, 'rowGap' => 4, 'showLines'=>1, 'width'=>$TamTablasCompetas, 'xPos'=>$PosTablasCompletas, 'fontSize' => $TextGreneral, 'shaded'=> 2, 'shadeCol'=>array(1.0,0,0.05), 'shadeCol2'=>array(1.0,0.18,0.18), 'textCol'=>array(1.0,1.0,1.0), 'cols'=>$JustifiacionColumnasCab));
+
+
+				$pdf->line(35,$pdf->y,35,40);
+				$pdf->line(85,$pdf->y,85,40);
+				$pdf->line(565,$pdf->y,565,40);
+				$pdf->line(35,40.5,565,40.5);
+
+			}
+			$pdf->ezTable($data, $NombreColumnas, '', array('showHeadings'=>0, 'rowGap' => 1, 'showLines'=>0, 'width'=>$TamTablasCompetas, 'xPos'=>$PosTablasCompletas, 'fontSize' => $TextGreneral, 'shaded'=> 0, 'textCol'=>array(0.0,0.0,0.0), 'cols'=>$JustifiacionColumnas));
+			unset($data);
+		}
+	}
+		
+	
+	
+	$ConsultaC = "SELECT * FROM C_EquiposTmaxLinkFCotizacionAdicionales WHERE IDCotizacion='".$_SESSION["IDCotizacionTmaxActivo"]."' and Filtro!='Gabinete Primario' and Filtro!='Espacios y Secciones Adicionales' and Estatus='Activo' ORDER BY Ordenar ASC;";
+	$queryC = mysqli_query($conexion, $ConsultaC);
+	while ($citaC = mysqli_fetch_array($queryC))
+	{
+		
+		if($citaC["Filtro"]=="Tapas Ciegas")
+		{
+			$arrTapasUsadas["T".$citaC["Tamanno"]]+=floatval($citaC["Cantidad"]);
+		}
+		if($citaC["Filtro"]=="Espacios Futuros")
+		{
+			$arrEspaciosFuturos[$citaC["Tamanno"]]+=floatval($citaC["Cantidad"]);
+		}
+
+		$conR=0;
+		$data[$conR]["NombreCorto0"]=" ";//.$pdf->y;
+
+		if($pdf->y<=80)
+		{
+			$pdf->ezNewPage();
+			$pdf->addPngFromFile($nmbreImagenEmpresa,40,780,$LargoImagenLogo2,$AltoImagenLogo2);
+			$pdf->ezSetY($PosY);
+			$pdf->ezTable($dataTab, $NombreColumnasTab, '', array('showHeadings'=>0, 'rowGap' => 1, 'showLines'=>1, 'width'=>$TamTablasCompetas, 'xPos'=>$PosTablasCompletas, 'fontSize' => $TextGreneral, 'shaded'=> 0, 'textCol'=>array(0.0,0.0,0.0), 'cols'=>$JustifiacionColumnasTab));
+			$pdf->ezSetY($pdf->y-15);
+			$pdf->ezTable($dataCab, $NombreColumnasCab, '', array('showHeadings'=>0, 'rowGap' => 4, 'showLines'=>1, 'width'=>$TamTablasCompetas, 'xPos'=>$PosTablasCompletas, 'fontSize' => $TextGreneral, 'shaded'=> 2, 'shadeCol'=>array(1.0,0,0.05), 'shadeCol2'=>array(1.0,0.18,0.18), 'textCol'=>array(1.0,1.0,1.0), 'cols'=>$JustifiacionColumnasCab));
+			
+			$pdf->line(35,$pdf->y,35,40);
+			$pdf->line(85,$pdf->y,85,40);
+			$pdf->line(565,$pdf->y,565,40);
+			$pdf->line(35,40.5,565,40.5);
+		}
+		
+		$pdf->ezTable($data, $NombreColumnas, '', array('showHeadings'=>0, 'rowGap' => 1, 'showLines'=>0, 'width'=>$TamTablasCompetas, 'xPos'=>$PosTablasCompletas, 'fontSize' => $TextGreneral, 'shaded'=> 0, 'textCol'=>array(0.0,0.0,0.0), 'cols'=>$JustifiacionColumnas));
+	}
+	
+	unset($data);
+	unset($NombreColumnas);
+	unset($JustifiacionColumnas);
+
+/////////////////////////////////
+/////Caclcular Espacios Usados
+///////////////////////////////
+$arrTamanioCajas=array("XT1"=>100, "XT2"=>100, "XT3"=>150, "T4"=>150, "T5"=>200, "T6"=>250, "T7"=>300, "XT4"=>150, "XT5"=>200, "XT6"=>250, "XT7"=>300);
+$CajasPorTapa =array("XT1"=>2, "XT2"=>2, "XT3"=>2, "T4"=>2, "T5"=>2, "T6"=>1, "T7"=>1, "XT4"=>2, "XT5"=>1, "XT6"=>1, "XT7"=>1);
+
+$SwitchsXT1=0;
+$SwitchsXT2=0;
+$SwitchsXT3=0;
+$SwitchsT4=0;
+$SwitchsT5=0;
+$SwitchsT6=0;
+$SwitchsT7=0;
+if($arrSwitchUsados["XT1"]>0)
+{
+	$SwitchsXT1=ceil(floatval($arrSwitchUsados["XT1"])/floatval($CajasPorTapa["XT1"]));
+}
+if($arrSwitchUsados["XT2"]>0)
+{
+	$SwitchsXT2=ceil(floatval($arrSwitchUsados["XT2"])/floatval($CajasPorTapa["XT2"]));
+}
+if($arrSwitchUsados["XT3"]>0)
+{
+	$SwitchsXT3=ceil(floatval($arrSwitchUsados["XT3"])/floatval($CajasPorTapa["XT3"]));
+}
+if($arrSwitchUsados["T4"]>0)
+{
+	$SwitchsT4=ceil(floatval($arrSwitchUsados["T4"])/floatval($CajasPorTapa["T4"]));
+}
+if($arrSwitchUsados["T5"]>0)
+{
+	$SwitchsT5=ceil(floatval($arrSwitchUsados["T5"])/floatval($CajasPorTapa["T5"]));
+}
+if($arrSwitchUsados["T6"]>0)
+{
+	$SwitchsT6=ceil(floatval($arrSwitchUsados["T6"])/floatval($CajasPorTapa["T6"]));
+}
+if($arrSwitchUsados["T7"]>0)
+{
+	$SwitchsT7=ceil(floatval($arrSwitchUsados["T7"])/floatval($CajasPorTapa["T7"]));
+}
+	
+if($arrSwitchUsados["XT4"]>0)
+{
+	$SwitchsT4=ceil(floatval($arrSwitchUsados["XT4"])/floatval($CajasPorTapa["XT4"]));
+}
+if($arrSwitchUsados["XT5"]>0)
+{
+	$SwitchsT5=ceil(floatval($arrSwitchUsados["XT5"])/floatval($CajasPorTapa["XT5"]));
+}
+if($arrSwitchUsados["XT6"]>0)
+{
+	$SwitchsT6=ceil(floatval($arrSwitchUsados["XT6"])/floatval($CajasPorTapa["XT6"]));
+}
+if($arrSwitchUsados["XT7"]>0)
+{
+	$SwitchsT7=ceil(floatval($arrSwitchUsados["XT7"])/floatval($CajasPorTapa["XT7"]));
+}
+
+/////////////////////////
+//////Fin Calcular Espacios Usados
+///////////////////////////
+
+$RestaleYPartes=14;
+$TamanoExtraY=28;//Espacios para poner rejillas arriba y abajo
+$YPosGabInicio=35;//le puse un numero muy bajo para iniciar una hoja
+
+$DividirEscala=7;
+$TamanioGabiente2=1750;
+//$AnchoGabiente2=98;
+$AnchoGabiente2=115;
+//if($boolConexionAZapatas) 
+$TamanioSwitchPrincipal=450;
+
+$AltoLinea=$TamanioGabiente2/$DividirEscala;
+//$PosXGabInicio=120;
+$PosXGabInicio=70;
+
+$AnchoMargen=4;             
+$nmbreSwitch="imgenes/SwitchSelectorTmax.png";
+
+if($boolMedicionSwitch)
+{
+	$imagenSwitchPrinicipal="imgenes/SwitchSelectorTmaxPrinicipal.png";
+}
+else
+{
+	$imagenSwitchPrinicipal="imgenes/SwitchSelectorTmaxPrinicipalSinMedicion.png";
+}
+
+$iconoRejillas="imgenes/iconoRejillaTmaxLink.png";
+$PosXGabActual=$PosXGabInicio;
+for($i=0; $i<$CantidadGabinetes; $i++)
+{ ///inicio Conteo Gabinetes
+	if(($PosXGabActual+$AnchoGabiente2)>600)
+	{
+		$pdf->line($PosXGabActual+20,$YPosGabInicio+20,$PosXGabActual+20,$YPosGabInicio-$AltoLinea+20-$TamanoExtraY);///Y2
+		$pdf->line($PosXGabActual,$YPosGabInicio-$AltoLinea-$TamanoExtraY,$PosXGabActual+20,$YPosGabInicio-$AltoLinea+20-$TamanoExtraY);/////X2
+
+		$PosXGabActual=$PosXGabInicio;
+		$YPosGabInicio=$YPosGabInicio-$AltoLinea-70;
+	}
+	
+	if(($YPosGabInicio-$AltoLinea)<50)
+	{
+		$pdf->ezNewPage();
+        $pdf->addPngFromFile($nmbreImagenEmpresa,40,780,$LargoImagenLogo2,$AltoImagenLogo2);////////////////////////////////////////////////////////////////////////////
+        $pdf->ezSetY($PosY);
+        $pdf->ezTable($dataTab, $NombreColumnasTab, '', array('showHeadings'=>0, 'rowGap' => 1, 'showLines'=>1, 'width'=>$TamTablasCompetas, 'xPos'=>$PosTablasCompletas, 'fontSize' => $TextGreneral, 'shaded'=> 0, 'textCol'=>array(0.0,0.0,0.0), 'cols'=>$JustifiacionColumnasTab));
+        $pdf->ezSetY($pdf->y-15);
+		
+		$dataCabImagen[0]["NombreCorto0"]="<b>Detalles</b>";
+		$NombreColumnasCabImagen["NombreCorto0"]='';	
+		$JustifiacionColumnasCabImagen["NombreCorto0"]=array('justification'=>'center');
+
+        $pdf->ezTable($dataCabImagen, $NombreColumnasCabImagen, '', array('showHeadings'=>0, 'rowGap' => 4, 'showLines'=>1, 'width'=>$TamTablasCompetas, 'xPos'=>$PosTablasCompletas, 'fontSize' => $TextGreneral, 'shaded'=> 2, 'shadeCol'=>array(1.0,0,0.05), 'shadeCol2'=>array(1.0,0.18,0.18), 'textCol'=>array(1.0,1.0,1.0), 'cols'=>$JustifiacionColumnasCabImagen));
+        $pdf->line(35,$pdf->y,35,40);
+        $pdf->line(565,$pdf->y,565,40);
+        $pdf->line(35,40.5,565,40.5);
+		
+		$YPosGabInicio=$pdf->y-40;
+		$YPosGab=$YPosGabInicio;
+	}
+	else
+	{
+		$YPosGab=$YPosGabInicio;	
+	}
+	
+	$SobranteAltoGabinete=$TamanioGabiente2/$DividirEscala;
+
+	$pdf->setColor(0.50,0.56,0.55);//////// Golor Fondo Gabinete
+	
+	$pdata = [$PosXGabActual,$YPosGab, $PosXGabActual+20,$YPosGab+20, $PosXGabActual+$AnchoGabiente2+20,$YPosGab+20, $PosXGabActual+$AnchoGabiente2,$YPosGab];
+	$pdf->polygon($pdata,4,1);
+	$pdata = [$PosXGabActual,$YPosGab, $PosXGabActual+$AnchoGabiente2,$YPosGab, $PosXGabActual+$AnchoGabiente2,$YPosGab-$AltoLinea-$TamanoExtraY, $PosXGabActual,$YPosGab-$AltoLinea-$TamanoExtraY];
+	$pdf->polygon($pdata,4,1);
+	$pdata = [$PosXGabActual+$AnchoGabiente2,$YPosGab, $PosXGabActual+$AnchoGabiente2+20,$YPosGab+20, $PosXGabActual+$AnchoGabiente2+20,$YPosGab-$AltoLinea+20-$TamanoExtraY, $PosXGabActual+$AnchoGabiente2,$YPosGab-$AltoLinea-$TamanoExtraY];
+	$pdf->polygon($pdata,4,1);
+
+	///INICIO Rejillas Arriba
+	$AltoImagenLogo=6;
+	$LargoImagenLogo=$AnchoGabiente2/4;////Primnir Imagen
+	$XposSwitch=$PosXGabActual+(($AnchoGabiente2-$LargoImagenLogo)/2);////Primnir Imagen
+	$pdf->addPngFromFile($iconoRejillas,$XposSwitch-$LargoImagenLogo-6,$YPosGab-12,$LargoImagenLogo,$AltoImagenLogo);////Primnir Imagen
+	$pdf->addPngFromFile($iconoRejillas,$XposSwitch,$YPosGab-12,$LargoImagenLogo,$AltoImagenLogo);////Primnir Imagen
+	$pdf->addPngFromFile($iconoRejillas,$XposSwitch+$LargoImagenLogo+6,$YPosGab-12,$LargoImagenLogo,$AltoImagenLogo);////Primnir Imagen
+	///FIN Rejillas Arriba
+	
+	//INICIO Rejillas Abajo
+	$pdf->addPngFromFile($iconoRejillas,$XposSwitch-$LargoImagenLogo-6,$YPosGab-22-$AltoLinea,$LargoImagenLogo,$AltoImagenLogo);////Primnir Imagen
+	$pdf->addPngFromFile($iconoRejillas,$XposSwitch,$YPosGab-22-$AltoLinea,$LargoImagenLogo,$AltoImagenLogo);////Primnir Imagen
+	$pdf->addPngFromFile($iconoRejillas,$XposSwitch+$LargoImagenLogo+6,$YPosGab-22-$AltoLinea,$LargoImagenLogo,$AltoImagenLogo);////Primnir Imagen
+	
+	$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab-14,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab-14);///X2 
+	//FIN Rejillas Abajo
+	
+	$pdf->setColor(0,0,0);//////// Golor Fondo Gabinete
+	
+	////INICIO Frente Gabiente
+	$pdf->line($PosXGabActual,$YPosGab,$PosXGabActual,$YPosGab-$AltoLinea-$TamanoExtraY);///Y1 
+	$pdf->line($PosXGabActual+$AnchoGabiente2,$YPosGab,$PosXGabActual+$AnchoGabiente2,$YPosGab-$AltoLinea-$TamanoExtraY);///Y2   
+	$pdf->line($PosXGabActual,$YPosGab,$PosXGabActual+$AnchoGabiente2,$YPosGab);///X1   
+	$pdf->line($PosXGabActual,$YPosGab-$AltoLinea-$TamanoExtraY,$PosXGabActual+$AnchoGabiente2,$YPosGab-$AltoLinea-$TamanoExtraY);/////X2
+	
+	//INICIO Margen Gabinete
+	
+	$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab-$AnchoMargen,$PosXGabActual+$AnchoMargen,$YPosGab-$AltoLinea-$TamanoExtraY+$AnchoMargen);///Y1 
+	$pdf->line($PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab-$AnchoMargen,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab-$AltoLinea-$TamanoExtraY+$AnchoMargen);///Y2   
+	$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab-$AnchoMargen,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab-$AnchoMargen);///X1   
+	$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab-$AltoLinea-$TamanoExtraY+$AnchoMargen,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab-$AltoLinea-$TamanoExtraY+$AnchoMargen);/////X2
+	//FIN Margen Gabiente
+	///FIN Frente Gabinete
+	
+	///Inicio Arriba Gabiente
+	$pdf->line($PosXGabActual+20,$YPosGab+20,$PosXGabActual+$AnchoGabiente2+20,$YPosGab+20);///X1 //Fondo Arriba
+	$pdf->line($PosXGabActual,$YPosGab,$PosXGabActual+20,$YPosGab+20);///Y1   //Fondo Arriba
+	$pdf->line($PosXGabActual+$AnchoGabiente2,$YPosGab,$PosXGabActual+$AnchoGabiente2+20,$YPosGab+20);///Y2   //Fondo Arriba
+	////Fon Arriba Gabiente
+	
+	/////inicio Lateral Derecho Gabiente
+	if(($i+1)==$CantidadGabinetes)
+	{
+		$pdf->line($PosXGabActual+$AnchoGabiente2+20,$YPosGab+20,$PosXGabActual+$AnchoGabiente2+20,$YPosGab-$AltoLinea+20-$TamanoExtraY);///Y2
+		$pdf->line($PosXGabActual+$AnchoGabiente2,$YPosGab-$AltoLinea-$TamanoExtraY,$PosXGabActual+$AnchoGabiente2+20,$YPosGab-$AltoLinea+20-$TamanoExtraY);/////X2
+	}
+	////Fin Lateral Derecho Gabinete
+	
+	if($PosXGabActual==$PosXGabInicio)//if($i==0)
+	{
+		////INICIO Medidas Alto
+		$pdf->line($PosXGabActual-10,$YPosGab,$PosXGabActual-10,$YPosGab-$AltoLinea-$TamanoExtraY);///Medida Alto
+		$pdf->line($PosXGabActual-15,$YPosGab,$PosXGabActual-10+5,$YPosGab);///Medida Alto
+		$pdf->line($PosXGabActual-15,$YPosGab-$AltoLinea-$TamanoExtraY,$PosXGabActual-10+5,$YPosGab-$AltoLinea-$TamanoExtraY);///Medida Alto
+		$pdf->addText($PosXGabActual-11,$YPosGab-(($AltoLinea+$TamanoExtraY)/2),7,"2250 mm",0, 'center',-90);
+		//Fin Medidas Alto
+	
+		$pdf->line($PosXGabActual-10,$YPosGab,$PosXGabActual+20-10,$YPosGab+20);///Medida Fondo
+		$pdf->line($PosXGabActual+20-15,$YPosGab+20,$PosXGabActual+20-10+5,$YPosGab+20);///X1
+		//$pdf->addText($PosXGabActual-3,$YPosGab,7, $arrFondoGabinete[$CorrienteNominal]." mm" ,0, 'center',-45);
+		$pdf->addText($PosXGabActual-3,$YPosGab,7, $tabDeep." mm" ,0, 'center',-45);
+	}
+	
+	$pdf->line($PosXGabActual+20,$YPosGab+20+8,$PosXGabActual+$AnchoGabiente2+20,$YPosGab+20+8);///Medida Ancho
+	$pdf->line($PosXGabActual+20,$YPosGab+28+4,$PosXGabActual+20,$YPosGab+28-4);///Medida Ancho
+	$pdf->line($PosXGabActual+$AnchoGabiente2+20,$YPosGab+28+4,$PosXGabActual+$AnchoGabiente2+20,$YPosGab+28-4);///Medida Ancho
+	
+	//$pdf->addText($PosXGabActual+20+($AnchoGabiente2/2),$YPosGab+28+1,7,"965 mm",0, 'center',0);
+	$pdf->addText($PosXGabActual+20+($AnchoGabiente2/2),$YPosGab+28+1,7,$ancho." mm",0, 'center',0);
+	//$pdf->line($PosXGabActual+$AnchoGabiente2+20,$YPosGab+20,$PosXGabActual+$AnchoGabiente2,$YPosGab-$AltoLinea);///Y2
+	
+	
+	$YPosGab-=$RestaleYPartes;
+	if($i==0)
+	{
+		if(!$boolConexionAZapatas)//como es conexion a zapatas no lleva switch principal
+		{
+			//imgenes/
+			$AltoPrimerSwitch=$TamanioSwitchPrincipal/$DividirEscala;
+			$YPosGab-=$AltoPrimerSwitch;
+			$SobranteAltoGabinete-=$AltoPrimerSwitch;
+			$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+
+			$AltoImagenLogo=$AltoPrimerSwitch-8;
+			list($AnchoRealImagen, $AlturaRealImagen, $tipo, $atr) = getimagesize($imagenSwitchPrinicipal);////Primnir Imagen
+			$LargoImagenLogo=($AnchoRealImagen/$AlturaRealImagen)*$AltoImagenLogo;////Primnir Imagen
+
+			$XposSwitch=$PosXGabActual+(($AnchoGabiente2-$LargoImagenLogo)/2);////Primnir Imagen
+			$pdf->addPngFromFile($imagenSwitchPrinicipal,$XposSwitch,$YPosGab+1+3,$LargoImagenLogo,$AltoImagenLogo);////Primnir Imagen
+			
+		}
+		
+	}
+	
+	//$contSwitch=0;
+	while($arrSwitchUsados["T7"]>0)
+	{
+	 	if($SobranteAltoGabinete<(floatval($arrTamanioCajas["T7"])/$DividirEscala)-2)
+		{
+			break;
+		}
+		$SobranteAltoGabinete-=floatval($arrTamanioCajas["T7"])/$DividirEscala;
+		
+		$YPosGab-=floatval($arrTamanioCajas["T7"])/$DividirEscala;
+		$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+
+		$AnchoMedioGabinete=$AnchoGabiente2;
+		$AltoSwitch=floatval($arrTamanioCajas["T7"])/$DividirEscala;
+		if($CajasPorTapa["T7"]==2)
+		{
+			$AnchoMedioGabinete=$AnchoGabiente2/2;
+			$pdf->line($PosXGabActual+$AnchoMedioGabinete,$YPosGab,$PosXGabActual+$AnchoMedioGabinete,$YPosGab+$AltoSwitch);///Primer Gabinete
+		}
+
+		$AltoImagenLogo=$AltoSwitch-4;
+		list($AnchoRealImagen, $AlturaRealImagen, $tipo, $atr) = getimagesize($nmbreSwitch);
+		$LargoImagenLogo=($AnchoRealImagen/$AlturaRealImagen)*$AltoImagenLogo;
+
+		$XposSwitch=$PosXGabActual+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+		$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+		$pdf->addText($PosXGabActual+2+$AnchoMargen,$YPosGab+4,7,"T7",0, 'left',0);
+		/////////////////////////////////////////////////////INICIO
+        for($j=0; $j<count($arrSwitchUsadosAmp["T7"]); $j++)
+        {
+            if($arrSwitchUsadosAmp["T7"][$j]!="")
+            {
+                $pdf->addText($PosXGabActual+96+8,$YPosGab+4,5,$arrSwitchUsadosAmp["T7"][$j]."A",0, 'right',0);
+				$arrSwitchUsadosAmp["T7"][$j]="";
+                break;
+            }
+        }
+        /////////////////////////////////FIN
+		
+		//$contSwitch++;
+		$arrSwitchUsados["T7"]--;
+	}
+
+	while($arrSwitchUsados["T6"]>0)
+	{
+		if($SobranteAltoGabinete<(floatval($arrTamanioCajas["T6"])/$DividirEscala)-2)
+		{
+			break;
+		}
+		$SobranteAltoGabinete-=floatval($arrTamanioCajas["T6"])/$DividirEscala;
+		
+		
+		$YPosGab-=floatval($arrTamanioCajas["T6"])/$DividirEscala;
+		$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+
+
+		$AnchoMedioGabinete=$AnchoGabiente2;
+		$AltoSwitch=floatval($arrTamanioCajas["T6"])/$DividirEscala;
+		if($CajasPorTapa["T6"]==2)
+		{
+			$AnchoMedioGabinete=$AnchoGabiente2/2;
+			$pdf->line($PosXGabActual+$AnchoMedioGabinete,$YPosGab,$PosXGabActual+$AnchoMedioGabinete,$YPosGab+$AltoSwitch);///Primer Gabinete
+		}
+
+		$AltoImagenLogo=$AltoSwitch-4;
+		list($AnchoRealImagen, $AlturaRealImagen, $tipo, $atr) = getimagesize($nmbreSwitch);
+		$LargoImagenLogo=($AnchoRealImagen/$AlturaRealImagen)*$AltoImagenLogo;
+
+		$XposSwitch=$PosXGabActual+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+		$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+		$pdf->addText($PosXGabActual+2+$AnchoMargen,$YPosGab+4,7,"T6",0, 'left',0);
+
+		/////////////////////////////////////////////////////INICIO
+        for($j=0; $j<count($arrSwitchUsadosAmp["T6"]); $j++)
+        {
+            if($arrSwitchUsadosAmp["T6"][$j]!="")
+            {
+                $pdf->addText($PosXGabActual+96+8,$YPosGab+4,5,$arrSwitchUsadosAmp["T6"][$j]."A",0, 'right',0);
+				$arrSwitchUsadosAmp["T6"][$j]="";
+                break;
+            }
+        }
+        /////////////////////////////////FIN
+		//$contSwitch++;
+		$arrSwitchUsados["T6"]--;
+	}
+
+	while($arrSwitchUsados["T5"]>0)
+	{
+		if($SobranteAltoGabinete<(floatval($arrTamanioCajas["T5"])/$DividirEscala)-2)
+		{
+			break;
+		}
+		$SobranteAltoGabinete-=floatval($arrTamanioCajas["T5"])/$DividirEscala;
+		
+		
+		$YPosGab-=floatval($arrTamanioCajas["T5"])/$DividirEscala;
+		$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+
+		$AnchoMedioGabinete=$AnchoGabiente2;
+		$AltoSwitch=floatval($arrTamanioCajas["T5"])/$DividirEscala;
+		if($CajasPorTapa["T5"]==2)
+		{
+			$AnchoMedioGabinete=$AnchoGabiente2/2;
+			$pdf->line($PosXGabActual+$AnchoMedioGabinete,$YPosGab,$PosXGabActual+$AnchoMedioGabinete,$YPosGab+$AltoSwitch);///Primer Gabinete
+		}
+
+		$AltoImagenLogo=$AltoSwitch-4-7;
+		list($AnchoRealImagen, $AlturaRealImagen, $tipo, $atr) = getimagesize($nmbreSwitch);
+		$LargoImagenLogo=($AnchoRealImagen/$AlturaRealImagen)*$AltoImagenLogo;
+
+
+		$XposSwitch=$PosXGabActual+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+		$pdf->addPngFromFile($nmbreSwitch,$XposSwitch+1,$YPosGab+2+3,$LargoImagenLogo,$AltoImagenLogo);
+		$pdf->addText($PosXGabActual+2+$AnchoMargen,$YPosGab+1,7,"T5",0, 'left',0);
+		
+		/////////////////////////////////////////////////////INICIO
+        for($j=0; $j<count($arrSwitchUsadosAmp["T5"]); $j++)
+        {
+            if($arrSwitchUsadosAmp["T5"][$j]!="")
+            {
+                $pdf->addText($PosXGabActual+8+46,$YPosGab+1,5,$arrSwitchUsadosAmp["T5"][$j]."A",0, 'right',0);
+				$arrSwitchUsadosAmp["T5"][$j]="";
+                break;
+            }
+        }
+        /////////////////////////////////FIN
+
+		$arrSwitchUsados["T5"]--;
+		//$contSwitch++;
+		if($CajasPorTapa["T5"]==2)
+		{
+			//if($contSwitch<=floatval($arrSwitchUsados["T5"]))
+			if($arrSwitchUsados["T5"]>0)
+			{
+				$XposSwitch=$PosXGabActual+$AnchoMedioGabinete+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+				$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2+3,$LargoImagenLogo,$AltoImagenLogo);
+				$pdf->addText($PosXGabActual+$AnchoMedioGabinete+2,$YPosGab+1,7,"T5",0, 'left',0);
+				
+				/////////////////////////////////////////////////////INICIO
+				for($j=0; $j<count($arrSwitchUsadosAmp["T5"]); $j++)
+				{
+					if($arrSwitchUsadosAmp["T5"][$j]!="")
+					{
+						$pdf->addText($PosXGabActual+$AnchoMedioGabinete+47+6,$YPosGab+1,5,$arrSwitchUsadosAmp["T5"][$j]."A",0, 'right',0);
+						$arrSwitchUsadosAmp["T5"][$j]="";
+						break;
+					}
+				}
+				/////////////////////////////////FIN
+				
+				//$contSwitch++;
+				$arrSwitchUsados["T5"]--;
+			}
+			else if($CajasPorTapa["T5"]==2)
+			{
+				//if($contSwitch<=floatval($arrSwitchUsados["XT1"]))
+				if($arrEspaciosFuturos["T5"]>0)
+				{
+					$XposSwitch=$PosXGabActual+$AnchoMedioGabinete+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+					//$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+					$pdf->addText($PosXGabActual+$AnchoMedioGabinete+($AnchoMedioGabinete)/4,$YPosGab+10,6,"Futuro T5",0, 'left',0);
+
+					//$contSwitch++;
+					$arrEspaciosFuturos["T5"]--;
+				}
+			}
+		}
+	}
+
+	while($arrSwitchUsados["T4"]>0)
+	{
+		if($SobranteAltoGabinete<(floatval($arrTamanioCajas["T4"])/$DividirEscala)-2)
+		{
+			break;
+		}
+		$SobranteAltoGabinete-=floatval($arrTamanioCajas["T4"])/$DividirEscala;
+		
+		
+		$YPosGab-=floatval($arrTamanioCajas["T4"])/$DividirEscala;
+		$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+
+		$AnchoMedioGabinete=$AnchoGabiente2;
+		$AltoSwitch=floatval($arrTamanioCajas["T4"])/$DividirEscala;
+		if($CajasPorTapa["T4"]==2)
+		{
+			$AnchoMedioGabinete=$AnchoGabiente2/2;
+			$pdf->line($PosXGabActual+$AnchoMedioGabinete,$YPosGab,$PosXGabActual+$AnchoMedioGabinete,$YPosGab+$AltoSwitch);///Primer Gabinete
+		}
+
+		$AltoImagenLogo=$AltoSwitch-4;
+		list($AnchoRealImagen, $AlturaRealImagen, $tipo, $atr) = getimagesize($nmbreSwitch);
+		$LargoImagenLogo=($AnchoRealImagen/$AlturaRealImagen)*$AltoImagenLogo;
+
+
+		$XposSwitch=$PosXGabActual+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+		$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+		$pdf->addText($PosXGabActual+2+$AnchoMargen,$YPosGab+1,7,"T4",0, 'left',0);
+		
+		/////////////////////////////////////////////////////INICIO
+		for($j=0; $j<count($arrSwitchUsadosAmp["T4"]); $j++)
+		{
+			if($arrSwitchUsadosAmp["T4"][$j]!="")
+			{
+				$pdf->addText($PosXGabActual+8+46,$YPosGab+1,5,$arrSwitchUsadosAmp["T4"][$j]."A",0, 'right',0);
+				$arrSwitchUsadosAmp["T4"][$j]="";
+				break;
+			}
+		}
+		/////////////////////////////////FIN
+	
+		$arrSwitchUsados["T4"]--;
+		if($CajasPorTapa["T4"]==2)
+		{
+			if($arrSwitchUsados["T4"]>0)
+			{
+				$XposSwitch=$PosXGabActual+$AnchoMedioGabinete+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+				$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+				$pdf->addText($PosXGabActual+$AnchoMedioGabinete+2,$YPosGab+1,7,"T4",0, 'left',0);
+
+				/////////////////////////////////////////////////////INICIO
+				for($j=0; $j<count($arrSwitchUsadosAmp["T4"]); $j++)
+				{
+					if($arrSwitchUsadosAmp["T4"][$j]!="")
+					{
+						$pdf->addText($PosXGabActual+$AnchoMedioGabinete+47+6,$YPosGab+1,5,$arrSwitchUsadosAmp["T4"][$j]."A",0, 'right',0);
+						$arrSwitchUsadosAmp["T4"][$j]="";
+						break;
+					}
+				}
+				/////////////////////////////////FIN
+
+				$arrSwitchUsados["T4"]--;
+			}
+			else if($CajasPorTapa["T4"]==2)
+			{
+				if($arrEspaciosFuturos["T4"]>0)
+				{
+					$XposSwitch=$PosXGabActual+$AnchoMedioGabinete+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+					$pdf->addText($PosXGabActual+$AnchoMedioGabinete+($AnchoMedioGabinete)/4,$YPosGab+7,6,"Futuro T4",0, 'left',0);
+					$arrEspaciosFuturos["T4"]--;
+				}
+			}
+		}
+
+	}
+	
+	///////////
+
+	while($arrSwitchUsados["XT7"]>0)
+	{
+	 	if($SobranteAltoGabinete<(floatval($arrTamanioCajas["XT7"])/$DividirEscala)-2)
+		{
+			break;
+		}
+		$SobranteAltoGabinete-=floatval($arrTamanioCajas["XT7"])/$DividirEscala;
+		
+		$YPosGab-=floatval($arrTamanioCajas["XT7"])/$DividirEscala;
+		$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+
+
+		$AnchoMedioGabinete=$AnchoGabiente2;
+		$AltoSwitch=floatval($arrTamanioCajas["XT7"])/$DividirEscala;
+		if($CajasPorTapa["XT7"]==2)
+		{
+			$AnchoMedioGabinete=$AnchoGabiente2/2;
+			$pdf->line($PosXGabActual+$AnchoMedioGabinete,$YPosGab,$PosXGabActual+$AnchoMedioGabinete,$YPosGab+$AltoSwitch);///Primer Gabinete
+		}
+
+		$AltoImagenLogo=$AltoSwitch-4;
+		list($AnchoRealImagen, $AlturaRealImagen, $tipo, $atr) = getimagesize($nmbreSwitch);
+		$LargoImagenLogo=($AnchoRealImagen/$AlturaRealImagen)*$AltoImagenLogo;
+
+
+		$XposSwitch=$PosXGabActual+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+		$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+		$pdf->addText($PosXGabActual+2+$AnchoMargen,$YPosGab+4,7,"XT7",0, 'left',0);
+		/////////////////////////////////////////////////////INICIO
+        for($j=0; $j<count($arrSwitchUsadosAmp["XT7"]); $j++)
+        {
+            if($arrSwitchUsadosAmp["XT7"][$j]!="")
+            {
+                $pdf->addText($PosXGabActual+96+8,$YPosGab+4,5,$arrSwitchUsadosAmp["XT7"][$j]."A",0, 'right',0);
+				$arrSwitchUsadosAmp["XT7"][$j]="";
+                break;
+            }
+        }
+        /////////////////////////////////FIN
+		
+		//$contSwitch++;
+		$arrSwitchUsados["XT7"]--;
+	}
+	
+	while($arrSwitchUsados["XT6"]>0)
+	{
+		if($SobranteAltoGabinete<(floatval($arrTamanioCajas["XT6"])/$DividirEscala)-2)
+		{
+			break;
+		}
+		$SobranteAltoGabinete-=floatval($arrTamanioCajas["XT6"])/$DividirEscala;
+		
+		
+		$YPosGab-=floatval($arrTamanioCajas["XT6"])/$DividirEscala;
+		$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+
+
+		$AnchoMedioGabinete=$AnchoGabiente2;
+		$AltoSwitch=floatval($arrTamanioCajas["XT6"])/$DividirEscala;
+		if($CajasPorTapa["XT6"]==2)
+		{
+			$AnchoMedioGabinete=$AnchoGabiente2/2;
+			$pdf->line($PosXGabActual+$AnchoMedioGabinete,$YPosGab,$PosXGabActual+$AnchoMedioGabinete,$YPosGab+$AltoSwitch);///Primer Gabinete
+		}
+
+		$AltoImagenLogo=$AltoSwitch-4;
+		list($AnchoRealImagen, $AlturaRealImagen, $tipo, $atr) = getimagesize($nmbreSwitch);
+		$LargoImagenLogo=($AnchoRealImagen/$AlturaRealImagen)*$AltoImagenLogo;
+
+
+		$XposSwitch=$PosXGabActual+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+		$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+		$pdf->addText($PosXGabActual+2+$AnchoMargen,$YPosGab+4,7,"XT6",0, 'left',0);
+		
+		
+		/////////////////////////////////////////////////////INICIO
+        for($j=0; $j<count($arrSwitchUsadosAmp["XT6"]); $j++)
+        {
+            if($arrSwitchUsadosAmp["XT6"][$j]!="")
+            {
+                $pdf->addText($PosXGabActual+96+8,$YPosGab+4,5,$arrSwitchUsadosAmp["XT6"][$j]."A",0, 'right',0);
+				$arrSwitchUsadosAmp["XT6"][$j]="";
+                break;
+            }
+        }
+        /////////////////////////////////FIN
+		//$contSwitch++;
+		$arrSwitchUsados["XT6"]--;
+		
+	}
+	
+	while($arrSwitchUsados["XT5"]>0)
+	{
+		if($SobranteAltoGabinete<(floatval($arrTamanioCajas["XT5"])/$DividirEscala)-2)
+		{
+			break;
+		}
+		$SobranteAltoGabinete-=floatval($arrTamanioCajas["XT5"])/$DividirEscala;
+		
+		
+		$YPosGab-=floatval($arrTamanioCajas["XT5"])/$DividirEscala;
+		$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+
+		$AnchoMedioGabinete=$AnchoGabiente2;
+		$AltoSwitch=floatval($arrTamanioCajas["XT5"])/$DividirEscala;
+		if($CajasPorTapa["XT5"]==2)
+		{
+			$AnchoMedioGabinete=$AnchoGabiente2/2;
+			$pdf->line($PosXGabActual+$AnchoMedioGabinete,$YPosGab,$PosXGabActual+$AnchoMedioGabinete,$YPosGab+$AltoSwitch);///Primer Gabinete
+		}
+
+		$AltoImagenLogo=$AltoSwitch-4-7;
+		list($AnchoRealImagen, $AlturaRealImagen, $tipo, $atr) = getimagesize($nmbreSwitch);
+		$LargoImagenLogo=($AnchoRealImagen/$AlturaRealImagen)*$AltoImagenLogo;
+
+
+		$XposSwitch=$PosXGabActual+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+		$pdf->addPngFromFile($nmbreSwitch,$XposSwitch+1,$YPosGab+2+3,$LargoImagenLogo,$AltoImagenLogo);
+		$pdf->addText($PosXGabActual+2+$AnchoMargen,$YPosGab+1,7,"XT5",0, 'left',0);
+		
+		/////////////////////////////////////////////////////INICIO
+        for($j=0; $j<count($arrSwitchUsadosAmp["XT5"]); $j++)
+        {
+            if($arrSwitchUsadosAmp["XT5"][$j]!="")
+            {
+                $pdf->addText($PosXGabActual+8+46,$YPosGab+1,5,$arrSwitchUsadosAmp["XT5"][$j]."A",0, 'right',0);
+				$arrSwitchUsadosAmp["XT5"][$j]="";
+                break;
+            }
+        }
+        /////////////////////////////////FIN
+
+		$arrSwitchUsados["XT5"]--;
+		//$contSwitch++;
+		if($CajasPorTapa["XT5"]==2)
+		{
+			//if($contSwitch<=floatval($arrSwitchUsados["T5"]))
+			if($arrSwitchUsados["XT5"]>0)
+			{
+				$XposSwitch=$PosXGabActual+$AnchoMedioGabinete+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+				$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2+3,$LargoImagenLogo,$AltoImagenLogo);
+				$pdf->addText($PosXGabActual+$AnchoMedioGabinete+2,$YPosGab+1,7,"XT5",0, 'left',0);
+
+				/////////////////////////////////////////////////////INICIO
+				for($j=0; $j<count($arrSwitchUsadosAmp["XT5"]); $j++)
+				{
+					if($arrSwitchUsadosAmp["XT5"][$j]!="")
+					{
+						$pdf->addText($PosXGabActual+$AnchoMedioGabinete+47+6,$YPosGab+1,5,$arrSwitchUsadosAmp["XT5"][$j]."A",0, 'right',0);
+						$arrSwitchUsadosAmp["XT5"][$j]="";
+						break;
+					}
+				}
+				/////////////////////////////////FIN
+				
+				//$contSwitch++;
+				$arrSwitchUsados["XT5"]--;
+			}
+			else if($CajasPorTapa["XT5"]==2)
+			{
+				//if($contSwitch<=floatval($arrSwitchUsados["XT1"]))
+				if($arrEspaciosFuturos["XT5"]>0)
+				{
+					$XposSwitch=$PosXGabActual+$AnchoMedioGabinete+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+					//$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+					$pdf->addText($PosXGabActual+$AnchoMedioGabinete+($AnchoMedioGabinete)/4,$YPosGab+10,6,"Futuro XT5",0, 'left',0);
+
+					//$contSwitch++;
+					$arrEspaciosFuturos["XT5"]--;
+				}
+			}
+		}
+	}
+
+	while($arrSwitchUsados["XT4"]>0)
+	{
+		if($SobranteAltoGabinete<(floatval($arrTamanioCajas["XT4"])/$DividirEscala)-2)
+		{
+			break;
+		}
+		$SobranteAltoGabinete-=floatval($arrTamanioCajas["XT4"])/$DividirEscala;
+		
+		$YPosGab-=floatval($arrTamanioCajas["XT4"])/$DividirEscala;
+		$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+
+		$AnchoMedioGabinete=$AnchoGabiente2;
+		$AltoSwitch=floatval($arrTamanioCajas["XT4"])/$DividirEscala;
+		if($CajasPorTapa["XT4"]==2)
+		{
+			$AnchoMedioGabinete=$AnchoGabiente2/2;
+			$pdf->line($PosXGabActual+$AnchoMedioGabinete,$YPosGab,$PosXGabActual+$AnchoMedioGabinete,$YPosGab+$AltoSwitch);///Primer Gabinete
+		}
+
+		$AltoImagenLogo=$AltoSwitch-4;
+		list($AnchoRealImagen, $AlturaRealImagen, $tipo, $atr) = getimagesize($nmbreSwitch);
+		$LargoImagenLogo=($AnchoRealImagen/$AlturaRealImagen)*$AltoImagenLogo;
+
+		$XposSwitch=$PosXGabActual+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+		$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+		$pdf->addText($PosXGabActual+2+$AnchoMargen,$YPosGab+1,7,"XT4",0, 'left',0);
+		
+		/////////////////////////////////////////////////////INICIO
+		for($j=0; $j<count($arrSwitchUsadosAmp["XT4"]); $j++)
+		{
+			if($arrSwitchUsadosAmp["XT4"][$j]!="")
+			{
+				$pdf->addText($PosXGabActual+8+46,$YPosGab+1,5,$arrSwitchUsadosAmp["XT4"][$j]."A",0, 'right',0);
+				$arrSwitchUsadosAmp["XT4"][$j]="";
+				break;
+			}
+		}
+		/////////////////////////////////FIN
+		
+		//$contSwitch++;
+		$arrSwitchUsados["XT4"]--;
+		if($CajasPorTapa["XT4"]==2)
+		{
+			//if($contSwitch<=floatval($arrSwitchUsados["T4"]))
+			if($arrSwitchUsados["XT4"]>0)
+			{
+				$XposSwitch=$PosXGabActual+$AnchoMedioGabinete+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+				$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+				$pdf->addText($PosXGabActual+$AnchoMedioGabinete+2,$YPosGab+1,7,"XT4",0, 'left',0);
+				
+				/////////////////////////////////////////////////////INICIO
+				for($j=0; $j<count($arrSwitchUsadosAmp["XT4"]); $j++)
+				{
+					if($arrSwitchUsadosAmp["XT4"][$j]!="")
+					{
+						$pdf->addText($PosXGabActual+$AnchoMedioGabinete+47+6,$YPosGab+1,5,$arrSwitchUsadosAmp["XT4"][$j]."A",0, 'right',0);
+						$arrSwitchUsadosAmp["XT4"][$j]="";
+						break;
+					}
+				}
+				/////////////////////////////////FIN
+				
+				//$contSwitch++;
+				$arrSwitchUsados["XT4"]--;
+			}
+			else if($CajasPorTapa["XT4"]==2)
+			{
+				//if($contSwitch<=floatval($arrSwitchUsados["XT1"]))
+				if($arrEspaciosFuturos["XT4"]>0)
+				{
+					$XposSwitch=$PosXGabActual+$AnchoMedioGabinete+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+					$pdf->addText($PosXGabActual+$AnchoMedioGabinete+($AnchoMedioGabinete)/4,$YPosGab+7,6,"Futuro XT4",0, 'left',0);
+					$arrEspaciosFuturos["XT4"]--;
+				}
+			}
+		}
+	}
+	
+	////////////
+
+	while($arrSwitchUsados["XT3"]>0)
+	{
+		if($SobranteAltoGabinete<(floatval($arrTamanioCajas["XT3"])/$DividirEscala)-2)
+		{
+			break;
+		}
+		$SobranteAltoGabinete-=floatval($arrTamanioCajas["XT3"])/$DividirEscala;
+		
+		
+		$YPosGab-=floatval($arrTamanioCajas["XT3"])/$DividirEscala;
+		$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+
+		$AnchoMedioGabinete=$AnchoGabiente2;
+		$AltoSwitch=floatval($arrTamanioCajas["XT3"])/$DividirEscala;
+		if($CajasPorTapa["XT3"]==2)
+		{
+			$AnchoMedioGabinete=$AnchoGabiente2/2;
+			$pdf->line($PosXGabActual+$AnchoMedioGabinete,$YPosGab,$PosXGabActual+$AnchoMedioGabinete,$YPosGab+$AltoSwitch);///Primer Gabinete
+		}
+
+		$AltoImagenLogo=$AltoSwitch-4;
+		list($AnchoRealImagen, $AlturaRealImagen, $tipo, $atr) = getimagesize($nmbreSwitch);
+		$LargoImagenLogo=($AnchoRealImagen/$AlturaRealImagen)*$AltoImagenLogo;
+
+
+		$XposSwitch=$PosXGabActual+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+		$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+		$pdf->addText($PosXGabActual+1+$AnchoMargen,$YPosGab+1,7,"XT3",0, 'left',0);
+		
+		/////////////////////////////////////////////////////INICIO
+		for($j=0; $j<count($arrSwitchUsadosAmp["XT3"]); $j++)
+		{
+			if($arrSwitchUsadosAmp["XT3"][$j]!="")
+			{
+				$pdf->addText($PosXGabActual+8+45,$YPosGab+1,5,$arrSwitchUsadosAmp["XT3"][$j]."A",0, 'right',0);
+				$arrSwitchUsadosAmp["XT3"][$j]="";
+				break;
+			}
+		}
+		/////////////////////////////////FIN
+		
+		//$contSwitch++;
+		$arrSwitchUsados["XT3"]--;
+		if($CajasPorTapa["XT3"]==2)
+		{
+			//if($contSwitch<=floatval($arrSwitchUsados["XT3"]))
+			if($arrSwitchUsados["XT3"]>0)
+			{
+				$XposSwitch=$PosXGabActual+$AnchoMedioGabinete+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+				$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+				$pdf->addText($PosXGabActual+$AnchoMedioGabinete+2,$YPosGab+1,7,"XT3",0, 'left',0);
+		
+				/////////////////////////////////////////////////////INICIO
+				for($j=0; $j<count($arrSwitchUsadosAmp["XT3"]); $j++)
+				{
+					if($arrSwitchUsadosAmp["XT3"][$j]!="")
+					{
+						$pdf->addText($PosXGabActual+$AnchoMedioGabinete+46+6,$YPosGab+1,5,$arrSwitchUsadosAmp["XT3"][$j]."A",0, 'right',0);
+						$arrSwitchUsadosAmp["XT3"][$j]="";
+						break;
+					}
+				}
+				/////////////////////////////////FIN
+				$arrSwitchUsados["XT3"]--;
+			}
+			else if($CajasPorTapa["XT3"]==2)
+			{
+				//if($contSwitch<=floatval($arrSwitchUsados["XT1"]))
+				if($arrEspaciosFuturos["XT3"]>0)
+				{
+					$XposSwitch=$PosXGabActual+$AnchoMedioGabinete+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+					//$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+					$pdf->addText($PosXGabActual+$AnchoMedioGabinete+($AnchoMedioGabinete)/4,$YPosGab+7,6,"Futuro XT3",0, 'left',0);
+
+					//$contSwitch++;
+					$arrEspaciosFuturos["XT3"]--;
+				}
+			}
+		}
+	}
+
+	while($arrSwitchUsados["XT2"]>0)
+	{
+		if($SobranteAltoGabinete<(floatval($arrTamanioCajas["XT2"])/$DividirEscala)-2)
+		{
+			break;
+		}
+		$SobranteAltoGabinete-=floatval($arrTamanioCajas["XT2"])/$DividirEscala;
+		
+		
+		$YPosGab-=floatval($arrTamanioCajas["XT2"])/$DividirEscala;
+		$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+
+		$AnchoMedioGabinete=$AnchoGabiente2;
+		$AltoSwitch=floatval($arrTamanioCajas["XT2"])/$DividirEscala;
+		if($CajasPorTapa["XT2"]==2)
+		{
+			$AnchoMedioGabinete=$AnchoGabiente2/2;
+			$pdf->line($PosXGabActual+$AnchoMedioGabinete,$YPosGab,$PosXGabActual+$AnchoMedioGabinete,$YPosGab+$AltoSwitch);///Primer Gabinete
+		}
+
+		$AltoImagenLogo=$AltoSwitch-4;
+		list($AnchoRealImagen, $AlturaRealImagen, $tipo, $atr) = getimagesize($nmbreSwitch);
+		$LargoImagenLogo=($AnchoRealImagen/$AlturaRealImagen)*$AltoImagenLogo;
+
+
+		$XposSwitch=$PosXGabActual+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+		$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+		$pdf->addText($PosXGabActual+2+$AnchoMargen,$YPosGab+1,7,"XT2",0, 'left',0);
+		/////////////////////////////////////////////////////INICIO
+		for($j=0; $j<count($arrSwitchUsadosAmp["XT2"]); $j++)
+		{
+			if($arrSwitchUsadosAmp["XT2"][$j]!="")
+			{
+				$pdf->addText($PosXGabActual+8+45,$YPosGab+1,5,$arrSwitchUsadosAmp["XT2"][$j]."A",0, 'right',0);
+				$arrSwitchUsadosAmp["XT2"][$j]="";
+				break;
+			}
+		}
+		/////////////////////////////////FIN
+		$arrSwitchUsados["XT2"]--;
+		if($CajasPorTapa["XT2"]==2)
+		{
+			//if($contSwitch<=floatval($arrSwitchUsados["XT2"]))
+			if($arrSwitchUsados["XT2"]>0)
+			{
+				$XposSwitch=$PosXGabActual+$AnchoMedioGabinete+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+				$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+				$pdf->addText($PosXGabActual+$AnchoMedioGabinete+2,$YPosGab+1,7,"XT2",0, 'left',0);
+
+				/////////////////////////////////////////////////////INICIO
+				for($j=0; $j<count($arrSwitchUsadosAmp["XT2"]); $j++)
+				{
+					if($arrSwitchUsadosAmp["XT2"][$j]!="")
+					{
+						$pdf->addText($PosXGabActual+$AnchoMedioGabinete+46+6,$YPosGab+1,5,$arrSwitchUsadosAmp["XT2"][$j]."A",0, 'right',0);
+						$arrSwitchUsadosAmp["XT2"][$j]="";
+						break;
+					}
+				}
+				/////////////////////////////////FIN
+				
+				$arrSwitchUsados["XT2"]--;
+			}
+			else if($CajasPorTapa["XT2"]==2)
+			{
+				if($arrEspaciosFuturos["XT2"]>0)
+				{
+					$XposSwitch=$PosXGabActual+$AnchoMedioGabinete+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+					$pdf->addText($PosXGabActual+$AnchoMedioGabinete-3+($AnchoMedioGabinete)/4,$YPosGab+4,6,"Futuro XT2",0, 'left',0);
+					$arrEspaciosFuturos["XT2"]--;
+				}
+			}
+		}
+	}
+
+	while($arrSwitchUsados["XT1"]>0)
+	{
+		if($SobranteAltoGabinete<(floatval($arrTamanioCajas["XT1"])/$DividirEscala)-2)
+		{
+			break;
+		}
+		$SobranteAltoGabinete-=floatval($arrTamanioCajas["XT1"])/$DividirEscala;
+		
+		$YPosGab-=floatval($arrTamanioCajas["XT1"])/$DividirEscala;
+		$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+
+		$AnchoMedioGabinete=$AnchoGabiente2;
+		$AltoSwitch=floatval($arrTamanioCajas["XT1"])/$DividirEscala;
+		if($CajasPorTapa["XT1"]==2)
+		{
+			$AnchoMedioGabinete=$AnchoGabiente2/2;
+			$pdf->line($PosXGabActual+$AnchoMedioGabinete,$YPosGab,$PosXGabActual+$AnchoMedioGabinete,$YPosGab+$AltoSwitch);///Primer Gabinete
+		}
+
+		$AltoImagenLogo=$AltoSwitch-4;
+		list($AnchoRealImagen, $AlturaRealImagen, $tipo, $atr) = getimagesize($nmbreSwitch);
+		$LargoImagenLogo=($AnchoRealImagen/$AlturaRealImagen)*$AltoImagenLogo;
+
+		$XposSwitch=$PosXGabActual+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+		$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+		$pdf->addText($PosXGabActual+2+$AnchoMargen,$YPosGab+1,7,"XT1",0, 'left',0);
+
+		/////////////////////////////////////////////////////INICIO
+		for($j=0; $j<count($arrSwitchUsadosAmp["XT1"]); $j++)
+		{
+			if($arrSwitchUsadosAmp["XT1"][$j]!="")
+			{
+				$pdf->addText($PosXGabActual+8+45,$YPosGab+1,5,$arrSwitchUsadosAmp["XT1"][$j]."A",0, 'right',0);
+				$arrSwitchUsadosAmp["XT1"][$j]="";
+				break;
+			}
+		}
+		/////////////////////////////////FIN
+		
+		//$contSwitch++;
+		$arrSwitchUsados["XT1"]--;
+		if($CajasPorTapa["XT1"]==2)
+		{
+			//if($contSwitch<=floatval($arrSwitchUsados["XT1"]))
+			if($arrSwitchUsados["XT1"]>0)
+			{
+				$XposSwitch=$PosXGabActual+$AnchoMedioGabinete+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+				$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+				$pdf->addText($PosXGabActual+$AnchoMedioGabinete+1,$YPosGab+1,7,"XT1",0, 'left',0);
+				
+				/////////////////////////////////////////////////////INICIO
+				for($j=0; $j<count($arrSwitchUsadosAmp["XT1"]); $j++)
+				{
+					if($arrSwitchUsadosAmp["XT1"][$j]!="")
+					{
+						$pdf->addText($PosXGabActual+$AnchoMedioGabinete+46+6,$YPosGab+1,5,$arrSwitchUsadosAmp["XT1"][$j]."A",0, 'right',0);
+						$arrSwitchUsadosAmp["XT1"][$j]="";
+						break;
+					}
+				}
+
+				$arrSwitchUsados["XT1"]--;
+			}
+			else if($CajasPorTapa["XT1"]==2)
+			{
+				//if($contSwitch<=floatval($arrSwitchUsados["XT1"]))
+				if($arrEspaciosFuturos["XT1"]>0)
+				{
+					$XposSwitch=$PosXGabActual+$AnchoMedioGabinete+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+					//$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+					$pdf->addText($PosXGabActual+$AnchoMedioGabinete-3+($AnchoMedioGabinete)/4,$YPosGab+4,6,"Futuro XT1",0, 'left',0);
+
+					//$contSwitch++;
+					$arrEspaciosFuturos["XT1"]--;
+				}
+			}
+		}
+	}
+	$XposTapas=$PosXGabActual;
+
+	if($arrEspaciosFuturos["T7"]>0)
+	{
+		//for($i=1; $i<=$arrTapasUsadas["250"]; $i++)
+		while($arrEspaciosFuturos["T7"]>0)
+		{
+			if($SobranteAltoGabinete<floatval(300/$DividirEscala)-2)
+			{
+				break;
+			}
+			$SobranteAltoGabinete-=floatval(300/$DividirEscala);
+			
+			
+			$YPosGab-=300/$DividirEscala;
+			$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+			$AltoTapa=300/$DividirEscala;
+
+			$AnchoMedioGabinete=$AnchoGabiente2;
+
+			if($CajasPorTapa["T7"]==2)
+			{
+				$AnchoMedioGabinete=$AnchoGabiente2/2;
+				$pdf->line($PosXGabActual+$AnchoMedioGabinete,$YPosGab,$PosXGabActual+$AnchoMedioGabinete,$YPosGab+$AltoTapa);///Primer Gabinete
+			}
+			$pdf->addText($PosXGabActual+($AnchoMedioGabinete/2)-12,$YPosGab+18,6,"Futuro T7",0, 'left',0);
+			
+			$arrEspaciosFuturos["T7"]--;
+			
+			if($CajasPorTapa["T7"]==2)
+			{
+				//if($contSwitch<=floatval($arrSwitchUsados["XT1"]))
+				if($arrEspaciosFuturos["T7"]>0)
+				{
+					$XposSwitch=$PosXGabActual+$AnchoMedioGabinete+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+					//$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+					$pdf->addText($PosXGabActual+$AnchoMedioGabinete+2,$YPosGab+1,6,"Futuro T7",0, 'left',0);
+
+					//$contSwitch++;
+					$arrEspaciosFuturos["T7"]--;
+				}
+			}
+		}
+	}
+	
+	
+	if($arrEspaciosFuturos["T6"]>0)
+	{
+		//for($i=1; $i<=$arrTapasUsadas["250"]; $i++)
+		while($arrEspaciosFuturos["T6"]>0)
+		{
+			if($SobranteAltoGabinete<floatval(250/$DividirEscala)-2)
+			{
+				break;
+			}
+			$SobranteAltoGabinete-=floatval(250/$DividirEscala);
+			
+			
+			$YPosGab-=250/$DividirEscala;
+			$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+			$AltoTapa=250/$DividirEscala;
+
+			$AnchoMedioGabinete=$AnchoGabiente2;
+			if($CajasPorTapa["T6"]==2)
+			{
+				$AnchoMedioGabinete=$AnchoGabiente2/2;
+				$pdf->line($PosXGabActual+$AnchoMedioGabinete,$YPosGab,$PosXGabActual+$AnchoMedioGabinete,$YPosGab+$AltoTapa);///Primer Gabinete
+			}
+			$pdf->addText($PosXGabActual+($AnchoMedioGabinete/2)-12,$YPosGab+16,6,"Futuro T6",0, 'left',0);
+			
+			$arrEspaciosFuturos["T6"]--;
+			
+			
+			if($CajasPorTapa["T6"]==2)
+			{
+				//if($contSwitch<=floatval($arrSwitchUsados["XT1"]))
+				if($arrEspaciosFuturos["T6"]>0)
+				{
+					$XposSwitch=$PosXGabActual+$AnchoMedioGabinete+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+					//$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+					$pdf->addText($PosXGabActual+$AnchoMedioGabinete+2,$YPosGab+1,6,"Futuro T6",0, 'left',0);
+
+					//$contSwitch++;
+					$arrEspaciosFuturos["T6"]--;
+				}
+			}
+		}
+	}
+	
+	
+	if($arrEspaciosFuturos["T5"]>0)
+	{
+		//for($i=1; $i<=$arrTapasUsadas["250"]; $i++)
+		while($arrEspaciosFuturos["T5"]>0)
+		{
+			if($SobranteAltoGabinete<floatval(200/$DividirEscala)-2)
+			{
+				break;
+			}
+			$SobranteAltoGabinete-=floatval(200/$DividirEscala);
+			
+			
+			$YPosGab-=200/$DividirEscala;
+			$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+			$AltoTapa=200/$DividirEscala;
+			
+			$AnchoMedioGabinete=$AnchoGabiente2;
+			if($CajasPorTapa["T5"]==2)
+			{
+				$AnchoMedioGabinete=$AnchoGabiente2/2;
+				$pdf->line($PosXGabActual+$AnchoMedioGabinete,$YPosGab,$PosXGabActual+$AnchoMedioGabinete,$YPosGab+$AltoTapa);///Primer Gabinete
+			}
+			
+			$pdf->addText($PosXGabActual+($AnchoMedioGabinete)/4,$YPosGab+10,6,"Futuro T5",0, 'left',0);
+			
+			$arrEspaciosFuturos["T5"]--;
+			
+			
+			if($CajasPorTapa["T5"]==2)
+			{
+				//if($contSwitch<=floatval($arrSwitchUsados["XT1"]))
+				if($arrEspaciosFuturos["T5"]>0)
+				{
+					$XposSwitch=$PosXGabActual+$AnchoMedioGabinete+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+					//$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+					$pdf->addText($PosXGabActual+$AnchoMedioGabinete+($AnchoMedioGabinete)/4,$YPosGab+10,6,"Futuro T5",0, 'left',0);
+
+					//$contSwitch++;
+					$arrEspaciosFuturos["T5"]--;
+				}
+			}
+		}
+	}
+	
+	
+	if($arrEspaciosFuturos["T4"]>0)
+	{
+		//for($i=1; $i<=$arrTapasUsadas["250"]; $i++)
+		while($arrEspaciosFuturos["T4"]>0)
+		{
+			if($SobranteAltoGabinete<floatval(150/$DividirEscala)-2)
+			{
+				break;
+			}
+			$SobranteAltoGabinete-=floatval(150/$DividirEscala);
+			
+			
+			$YPosGab-=150/$DividirEscala;
+			$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+			$AltoTapa=150/$DividirEscala;
+
+			$AnchoMedioGabinete=$AnchoGabiente2;
+			if($CajasPorTapa["T4"]==2)
+			{
+				$AnchoMedioGabinete=$AnchoGabiente2/2;
+				$pdf->line($PosXGabActual+$AnchoMedioGabinete,$YPosGab,$PosXGabActual+$AnchoMedioGabinete,$YPosGab+$AltoTapa);///Primer Gabinete
+			}//
+			
+			$pdf->addText($PosXGabActual+($AnchoMedioGabinete)/4,$YPosGab+8,6,"Futuro T4",0, 'left',0);
+			
+			$arrEspaciosFuturos["T4"]--;
+			
+			if($CajasPorTapa["T4"]==2)
+			{
+				//if($contSwitch<=floatval($arrSwitchUsados["XT1"]))
+				if($arrEspaciosFuturos["T4"]>0)
+				{
+					$XposSwitch=$PosXGabActual+$AnchoMedioGabinete+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+					//$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+					$pdf->addText($PosXGabActual+$AnchoMedioGabinete+($AnchoMedioGabinete)/4,$YPosGab+8,6,"Futuro T4",0, 'left',0);
+
+					//$contSwitch++;
+					$arrEspaciosFuturos["T4"]--;
+				}
+			}
+		}
+	}
+	
+	if($arrEspaciosFuturos["XT7"]>0)
+	{
+		//for($i=1; $i<=$arrTapasUsadas["250"]; $i++)
+		while($arrEspaciosFuturos["XT7"]>0)
+		{
+			if($SobranteAltoGabinete<floatval(300/$DividirEscala)-2)
+			{
+				break;
+			}
+			$SobranteAltoGabinete-=floatval(300/$DividirEscala);
+			
+			
+			$YPosGab-=300/$DividirEscala;
+			$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+			$AltoTapa=300/$DividirEscala;
+
+			$AnchoMedioGabinete=$AnchoGabiente2;
+
+			if($CajasPorTapa["XT7"]==2)
+			{
+				$AnchoMedioGabinete=$AnchoGabiente2/2;
+				$pdf->line($PosXGabActual+$AnchoMedioGabinete,$YPosGab,$PosXGabActual+$AnchoMedioGabinete,$YPosGab+$AltoTapa);///Primer Gabinete
+			}
+			$pdf->addText($PosXGabActual+($AnchoMedioGabinete/2)-12,$YPosGab+18,6,"Futuro XT7",0, 'left',0);
+			
+			$arrEspaciosFuturos["XT7"]--;
+			
+			if($CajasPorTapa["XT7"]==2)
+			{
+				//if($contSwitch<=floatval($arrSwitchUsados["XT1"]))
+				if($arrEspaciosFuturos["XT7"]>0)
+				{
+					$XposSwitch=$PosXGabActual+$AnchoMedioGabinete+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+					//$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+					$pdf->addText($PosXGabActual+$AnchoMedioGabinete+2,$YPosGab+1,6,"Futuro XT7",0, 'left',0);
+
+					//$contSwitch++;
+					$arrEspaciosFuturos["XT7"]--;
+				}
+			}
+		}
+	}
+	
+	
+	if($arrEspaciosFuturos["XT6"]>0)
+	{
+		//for($i=1; $i<=$arrTapasUsadas["250"]; $i++)
+		while($arrEspaciosFuturos["XT6"]>0)
+		{
+			if($SobranteAltoGabinete<floatval(250/$DividirEscala)-2)
+			{
+				break;
+			}
+			$SobranteAltoGabinete-=floatval(250/$DividirEscala);
+			
+			
+			$YPosGab-=250/$DividirEscala;
+			$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+			$AltoTapa=250/$DividirEscala;
+
+			$AnchoMedioGabinete=$AnchoGabiente2;
+
+			if($CajasPorTapa["XT6"]==2)
+			{
+				$AnchoMedioGabinete=$AnchoGabiente2/2;
+				$pdf->line($PosXGabActual+$AnchoMedioGabinete,$YPosGab,$PosXGabActual+$AnchoMedioGabinete,$YPosGab+$AltoTapa);///Primer Gabinete
+			}
+			$pdf->addText($PosXGabActual+($AnchoMedioGabinete/2)-12,$YPosGab+16,6,"Futuro XT6",0, 'left',0);
+			
+			$arrEspaciosFuturos["XT6"]--;
+			
+			
+			if($CajasPorTapa["XT6"]==2)
+			{
+				//if($contSwitch<=floatval($arrSwitchUsados["XT1"]))
+				if($arrEspaciosFuturos["XT6"]>0)
+				{
+					$XposSwitch=$PosXGabActual+$AnchoMedioGabinete+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+					//$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+					$pdf->addText($PosXGabActual+$AnchoMedioGabinete+2,$YPosGab+1,6,"Futuro XT6",0, 'left',0);
+
+					//$contSwitch++;
+					$arrEspaciosFuturos["XT6"]--;
+				}
+			}
+		}
+	}
+	
+	
+	if($arrEspaciosFuturos["XT5"]>0)
+	{
+		//for($i=1; $i<=$arrTapasUsadas["250"]; $i++)
+		while($arrEspaciosFuturos["XT5"]>0)
+		{
+			if($SobranteAltoGabinete<floatval(200/$DividirEscala)-2)
+			{
+				break;
+			}
+			$SobranteAltoGabinete-=floatval(200/$DividirEscala);
+			
+			
+			$YPosGab-=200/$DividirEscala;
+			$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+			$AltoTapa=200/$DividirEscala;
+
+			$AnchoMedioGabinete=$AnchoGabiente2;
+			if($CajasPorTapa["XT5"]==2)
+			{
+				$AnchoMedioGabinete=$AnchoGabiente2/2;
+				$pdf->line($PosXGabActual+$AnchoMedioGabinete,$YPosGab,$PosXGabActual+$AnchoMedioGabinete,$YPosGab+$AltoTapa);///Primer Gabinete
+			}
+			
+			$pdf->addText($PosXGabActual+($AnchoMedioGabinete)/4,$YPosGab+10,6,"Futuro XT5",0, 'left',0);
+			
+			$arrEspaciosFuturos["XT5"]--;
+			
+			
+			if($CajasPorTapa["XT5"]==2)
+			{
+				//if($contSwitch<=floatval($arrSwitchUsados["XT1"]))
+				if($arrEspaciosFuturos["XT5"]>0)
+				{
+					$XposSwitch=$PosXGabActual+$AnchoMedioGabinete+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+					//$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+					$pdf->addText($PosXGabActual+$AnchoMedioGabinete+($AnchoMedioGabinete)/4,$YPosGab+10,6,"Futuro XT5",0, 'left',0);
+
+					//$contSwitch++;
+					$arrEspaciosFuturos["XT5"]--;
+				}
+			}
+		}
+	}
+	
+	
+	if($arrEspaciosFuturos["XT4"]>0)
+	{
+		//for($i=1; $i<=$arrTapasUsadas["250"]; $i++)
+		while($arrEspaciosFuturos["XT4"]>0)
+		{
+			if($SobranteAltoGabinete<floatval(150/$DividirEscala)-2)
+			{
+				break;
+			}
+			$SobranteAltoGabinete-=floatval(150/$DividirEscala);
+			
+			$YPosGab-=150/$DividirEscala;
+			$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+			$AltoTapa=150/$DividirEscala;
+
+			$AnchoMedioGabinete=$AnchoGabiente2;
+			if($CajasPorTapa["XT4"]==2)
+			{
+				$AnchoMedioGabinete=$AnchoGabiente2/2;
+				$pdf->line($PosXGabActual+$AnchoMedioGabinete,$YPosGab,$PosXGabActual+$AnchoMedioGabinete,$YPosGab+$AltoTapa);///Primer Gabinete
+			}//
+			
+			$pdf->addText($PosXGabActual+($AnchoMedioGabinete)/4,$YPosGab+8,6,"Futuro XT4",0, 'left',0);
+			
+			$arrEspaciosFuturos["XT4"]--;
+			
+			if($CajasPorTapa["XT4"]==2)
+			{
+				//if($contSwitch<=floatval($arrSwitchUsados["XT1"]))
+				if($arrEspaciosFuturos["XT4"]>0)
+				{
+					$XposSwitch=$PosXGabActual+$AnchoMedioGabinete+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+					//$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+					$pdf->addText($PosXGabActual+$AnchoMedioGabinete+($AnchoMedioGabinete)/4,$YPosGab+8,6,"Futuro XT4",0, 'left',0);
+
+					//$contSwitch++;
+					$arrEspaciosFuturos["XT4"]--;
+				}
+			}
+		}
+	}
+
+	
+	if($arrEspaciosFuturos["XT3"]>0)
+	{
+		while($arrEspaciosFuturos["XT3"]>0)
+		{
+			if($SobranteAltoGabinete<floatval(150/$DividirEscala)-2)
+			{
+				break;
+			}
+			$SobranteAltoGabinete-=floatval(150/$DividirEscala);
+			
+			
+			$YPosGab-=150/$DividirEscala;
+			$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+			$AltoTapa=150/$DividirEscala;
+
+			$AnchoMedioGabinete=$AnchoGabiente2;
+			if($CajasPorTapa["XT3"]==2)
+			{
+				$AnchoMedioGabinete=$AnchoGabiente2/2;
+				$pdf->line($PosXGabActual+$AnchoMedioGabinete,$YPosGab,$PosXGabActual+$AnchoMedioGabinete,$YPosGab+$AltoTapa);///Primer Gabinete
+			}//
+			$pdf->addText($PosXGabActual-2+($AnchoMedioGabinete)/4,$YPosGab+8,6,"Futuro XT3",0, 'left',0);
+			
+			$arrEspaciosFuturos["XT3"]--;
+			
+			if($CajasPorTapa["XT3"]==2)
+			{
+				//if($contSwitch<=floatval($arrSwitchUsados["XT1"]))
+				if($arrEspaciosFuturos["XT3"]>0)
+				{
+					$XposSwitch=$PosXGabActual+$AnchoMedioGabinete+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+					//$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+					$pdf->addText($PosXGabActual+$AnchoMedioGabinete-2+($AnchoMedioGabinete)/4,$YPosGab+8,6,"Futuro XT3",0, 'left',0);
+
+					//$contSwitch++;
+					$arrEspaciosFuturos["XT3"]--;
+				}
+			}
+			
+		}
+	}
+	
+	
+	if($arrEspaciosFuturos["XT2"]>0)
+	{
+		//for($i=1; $i<=$arrTapasUsadas["250"]; $i++)
+		while($arrEspaciosFuturos["XT2"]>0)
+		{
+			if($SobranteAltoGabinete<floatval(100/$DividirEscala)-2)
+			{
+				break;
+			}
+			$SobranteAltoGabinete-=floatval(100/$DividirEscala);
+			
+			
+			$YPosGab-=100/$DividirEscala;
+			$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+			$AltoTapa=100/$DividirEscala;
+
+			$AnchoMedioGabinete=$AnchoGabiente2;
+			if($CajasPorTapa["XT2"]==2)
+			{
+				$AnchoMedioGabinete=$AnchoGabiente2/2;
+				$pdf->line($PosXGabActual+$AnchoMedioGabinete,$YPosGab,$PosXGabActual+$AnchoMedioGabinete,$YPosGab+$AltoTapa);///Primer Gabinete
+			}
+			$pdf->addText($PosXGabActual-2+($AnchoMedioGabinete)/4,$YPosGab+4,6,"Futuro XT2",0, 'left',0);
+			
+			$arrEspaciosFuturos["XT2"]--;
+			
+			
+			if($CajasPorTapa["XT2"]==2)
+			{
+				if($contSwitch<=floatval($arrSwitchUsados["XT1"]))
+				if($arrEspaciosFuturos["XT2"]>0)
+				{
+					$XposSwitch=$PosXGabActual+$AnchoMedioGabinete+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+					$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+					$pdf->addText($PosXGabActual+$AnchoMedioGabinete-2+($AnchoMedioGabinete)/4,$YPosGab+4,6,"Futuro XT2",0, 'left',0);
+
+					$contSwitch++;
+					$arrEspaciosFuturos["XT2"]--;
+				}
+			}
+			
+			
+			
+		}
+	}
+	
+	
+	if($arrEspaciosFuturos["XT1"]>0)
+	{
+		for($i=1; $i<=$arrTapasUsadas["250"]; $i++)
+		while($arrEspaciosFuturos["XT1"]>0)
+		{
+			if($SobranteAltoGabinete<floatval(100/$DividirEscala)-2)
+			{
+				break;
+			}
+			$SobranteAltoGabinete-=floatval(100/$DividirEscala);
+			
+			
+			$YPosGab-=100/$DividirEscala;
+			$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);/Primer Gabinete
+			$AltoTapa=100/$DividirEscala;
+
+			$AnchoMedioGabinete=$AnchoGabiente2;
+			if($CajasPorTapa["XT1"]==2)
+			{
+				$AnchoMedioGabinete=$AnchoGabiente2/2;
+				$pdf->line($PosXGabActual+$AnchoMedioGabinete,$YPosGab,$PosXGabActual+$AnchoMedioGabinete,$YPosGab+$AltoTapa);///Primer Gabinete
+			}//
+			$pdf->addText($PosXGabActual-2+($AnchoMedioGabinete)/4,$YPosGab+4,6,"Futuro XT1",0, 'left',0);
+			
+			
+			$arrEspaciosFuturos["XT1"]--;
+			
+			
+			
+			if($CajasPorTapa["XT1"]==2)
+			{
+				//if($contSwitch<=floatval($arrSwitchUsados["XT1"]))
+				if($arrEspaciosFuturos["XT1"]>0)
+				{
+					$XposSwitch=$PosXGabActual+$AnchoMedioGabinete+(($AnchoMedioGabinete-$LargoImagenLogo)/2);
+					//$pdf->addPngFromFile($nmbreSwitch,$XposSwitch,$YPosGab+2,$LargoImagenLogo,$AltoImagenLogo);
+					$pdf->addText($PosXGabActual+$AnchoMedioGabinete-2+($AnchoMedioGabinete)/4,$YPosGab+4,6,"Futuro XT1",0, 'left',0);
+
+					//$contSwitch++;
+					$arrEspaciosFuturos["XT1"]--;
+				}
+			}
+		}
+	}
+	
+	
+	if($arrTapasUsadas["T250"]>0)
+	{
+		//for($i=1; $i<=$arrTapasUsadas["250"]; $i++)
+		while($arrTapasUsadas["T250"]>0)
+		{
+			if($SobranteAltoGabinete<floatval(250/$DividirEscala)-2)
+			{
+				break;
+			}
+			$SobranteAltoGabinete-=floatval(250/$DividirEscala);
+			
+			
+			$YPosGab-=250/$DividirEscala;
+			$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+
+			$pdf->addText($PosXGabActual+($AnchoGabiente2/2),$YPosGab+15,6,"Tapa 250 mm",0, 'center',0);
+			
+			$arrTapasUsadas["T250"]--;
+		}
+	}
+	if($arrTapasUsadas["T200"]>0)
+	{
+		//for($i=1; $i<=$arrTapasUsadas["T200"]; $i++)
+		while($arrTapasUsadas["T200"]>0)
+		{
+			if($SobranteAltoGabinete<floatval(200/$DividirEscala)-2)
+			{
+				break;
+			}
+			$SobranteAltoGabinete-=floatval(200/$DividirEscala);
+						
+			$YPosGab-=200/$DividirEscala;
+			$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+			$pdf->addText($PosXGabActual+($AnchoGabiente2/2),$YPosGab+12,6,"Tapa 200 mm",0, 'center',0);
+			
+			$arrTapasUsadas["T200"]--;
+		}
+	}
+	if($arrTapasUsadas["T150"]>0)
+	{
+		while($arrTapasUsadas["T150"]>0)
+		{
+			if($SobranteAltoGabinete<floatval(150/$DividirEscala)-2)
+			{
+				break;
+			}
+			$SobranteAltoGabinete-=floatval(150/$DividirEscala);
+	
+			$YPosGab-=150/$DividirEscala;
+			$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+			//$AltoTapa=150/$DividirEscala;////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			$pdf->addText($PosXGabActual+($AnchoGabiente2/2),$YPosGab+8,6,"Tapa 150 mm",0, 'center',0);
+			
+			$arrTapasUsadas["T150"]--;
+		}
+	}
+	if($arrTapasUsadas["T100"]>0)
+	{
+		while($arrTapasUsadas["T100"]>0)
+		{
+			if($SobranteAltoGabinete<floatval(100/$DividirEscala)-2)
+			{
+				break;
+			}
+			$SobranteAltoGabinete-=floatval(100/$DividirEscala);
+			
+			$YPosGab-=100/$DividirEscala;
+			$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+			$pdf->addText($PosXGabActual+($AnchoGabiente2/2),$YPosGab+4,6,"Tapa 100 mm",0, 'center',0);
+			
+			$arrTapasUsadas["T100"]--;
+		}
+	}
+	if($arrTapasUsadas["T50"]>0)
+	{
+		while($arrTapasUsadas["T50"]>0)
+		{
+			if($SobranteAltoGabinete<floatval(50/$DividirEscala)-2)
+			{
+				break;
+			}
+			$SobranteAltoGabinete-=floatval(50/$DividirEscala);
+
+			$YPosGab-=50/$DividirEscala;
+			$pdf->line($PosXGabActual+$AnchoMargen,$YPosGab,$PosXGabActual+$AnchoGabiente2-$AnchoMargen,$YPosGab);///Primer Gabinete
+			$pdf->addText($PosXGabActual+($AnchoGabiente2/2),$YPosGab+1,6,"Tapa 50 mm",0, 'center',0);
+			
+			$arrTapasUsadas["T50"]--;
+		}
+	}
+	
+	$PosXGabActual+=$AnchoGabiente2;
+	
+}//Fin Conteo Gabientes
+/////////////////////////////
+////FIN GABINETE
+//////////////////////
+?>
